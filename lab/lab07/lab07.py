@@ -7,6 +7,9 @@ def amplify(f, x):
     [14, 6, 2]
     """
     "*** YOUR CODE HERE ***"
+    while x:
+        yield x
+        x = f(x)
 
 
 class Person:
@@ -32,9 +35,11 @@ class Person:
     def __init__(self, name):
         self.name = name
         "*** YOUR CODE HERE ***"
+        self.last_message = "I squirreled it away before it could catch on fire."
 
     def say(self, stuff):
         "*** YOUR CODE HERE ***"
+        self.last_message = stuff
         return stuff
 
     def ask(self, stuff):
@@ -45,6 +50,7 @@ class Person:
 
     def repeat(self):
         "*** YOUR CODE HERE ***"
+        return self.last_message
 
 
 class SmartFridge:
@@ -71,9 +77,20 @@ class SmartFridge:
 
     def add_item(self, item, quantity):
         "*** YOUR CODE HERE ***"
+        if item in self.items:
+            self.items[item] += quantity
+        else:
+            self.items[item] = quantity
+        return f"I now have {self.items[item]} {item}"
 
     def use_item(self, item, quantity):
         "*** YOUR CODE HERE ***"
+        if self.items[item] - quantity <= 0:
+            self.items[item] = 0
+            return f"Oh no, we need more {item}!"
+        else:
+            self.items[item] -= quantity
+            return f"I have {self.items[item]} {item} left"
 
 
 class CucumberGame:
@@ -121,13 +138,13 @@ class Round:
     def play(self, who, card):
         assert not self.is_complete(), f'The round is over, player {who}'
         assert who == self.next_player, f'It is not your turn, player {who}'
-        self.next_player = ______________________________________
+        self.next_player = (who + 1) % Round.players
         if card >= self.highest:
-            ______________________________________
-            ______________________________________
-        if ______________________________________:
-            ______________________________________
+            self.highest = card
+            self.control = who
+        if self.is_complete():
+            self.winner = self.control
 
     def is_complete(self):
         """ Checks if a game could end. """
-        return ______________________________________
+        return self.next_player == self.starter and self.highest > -1
