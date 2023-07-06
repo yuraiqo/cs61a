@@ -27,7 +27,7 @@ class Place:
         # Phase 1: Add an entrance to the exit
         # BEGIN Problem 2
         "*** YOUR CODE HERE ***"
-        if exit != None:
+        if self.exit:
             exit.entrance = self
         # END Problem 2
 
@@ -189,7 +189,12 @@ class ThrowerAnt(Ant):
         This method returns None if there is no such Bee (or none in range).
         """
         # BEGIN Problem 3 and 4
-        return random_bee(self.place.bees)  # REPLACE THIS LINE
+        place = self.place
+        while place.is_hive != True:
+            if place.bees:
+                return random_bee(place.bees)
+            place = place.entrance
+        return None
         # END Problem 3 and 4
 
     def throw_at(self, target):
