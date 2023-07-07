@@ -181,6 +181,8 @@ class ThrowerAnt(Ant):
     damage = 1
     # ADD/OVERRIDE CLASS ATTRIBUTES HERE
     food_cost = 3
+    upper_bound = float("inf")
+    lower_bound = 0
 
     def nearest_bee(self):
         """Return the nearest Bee in a Place that is not the HIVE, connected to
@@ -190,10 +192,11 @@ class ThrowerAnt(Ant):
         """
         # BEGIN Problem 3 and 4
         place = self.place
+        counter = 0
         while place.is_hive != True:
-            if place.bees:
+            if place.bees and (self.lower_bound <= counter <= self.upper_bound):
                 return random_bee(place.bees)
-            place = place.entrance
+            place, counter = place.entrance, counter + 1
         return None
         # END Problem 3 and 4
 
@@ -225,8 +228,9 @@ class ShortThrower(ThrowerAnt):
     food_cost = 2
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
-    # END Problem 4
+    implemented = True   # Change to True to view in the GUI
+    upper_bound = 3
+    # END Problem 
 
 
 class LongThrower(ThrowerAnt):
@@ -236,7 +240,8 @@ class LongThrower(ThrowerAnt):
     food_cost = 2
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    lower_bound = 5
     # END Problem 4
 
 
@@ -248,7 +253,7 @@ class FireAnt(Ant):
     food_cost = 5
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 5
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem 5
 
     def __init__(self, health=3):
@@ -264,6 +269,12 @@ class FireAnt(Ant):
         """
         # BEGIN Problem 5
         "*** YOUR CODE HERE ***"
+        bees = self.place.bees
+        super().reduce_health(self, amount)
+        if self.health <= 0:
+            amount = self.damage
+        for bee in bees:
+            super().reduce_health(bee, amount)
         # END Problem 5
 
 # BEGIN Problem 6
