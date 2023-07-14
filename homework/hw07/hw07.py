@@ -70,6 +70,13 @@ def two_list(vals, counts):
     Link(1, Link(1, Link(3, Link(3, Link(2)))))
     """
     "*** YOUR CODE HERE ***"
+    if not vals:
+        return Link.empty
+    elif counts[0] == 0:
+        vals, counts = vals[1:], counts[1:]
+        return two_list(vals, counts)
+    counts[0] -= 1
+    return Link(vals[0], two_list(vals, counts))
 
 
 def add_d_leaves(t, v):
@@ -131,6 +138,12 @@ def add_d_leaves(t, v):
         10
     """
     "*** YOUR CODE HERE ***"
+    def helper(t, d):
+        for branch in t.branches:
+            helper(branch, d + 1)
+            for i in range(d):
+                branch.branches.append(Tree(v))
+    helper(t, 1)
 
 
 class Link:
