@@ -1,4 +1,10 @@
-(define (ascending? asc-lst) 'YOUR-CODE-HERE)
+(define (ascending? asc-lst)
+    (cond
+        ((or (null? asc-lst) (null? (cdr asc-lst))) #t)
+        ((> (car asc-lst) (car (cdr asc-lst))) #f)
+        (else (ascending? (cdr asc-lst)))
+    )
+)
 
 (define (my-filter pred s) 'YOUR-CODE-HERE)
 
